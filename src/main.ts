@@ -7,9 +7,10 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Example API')
-    .setDescription('The example API description')
+    .setDescription('API description')
     .setVersion('1.0')
-    .addTag('example')
+    .addTag('auth')
+    .addBearerAuth() // This enables Bearer token authorization in Swagger UI
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
