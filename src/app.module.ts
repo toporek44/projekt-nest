@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DatabaseTestController } from './database-test/database-test.controller';
 import { DatabaseTestService } from './database-test/database-test.service';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -22,15 +23,14 @@ import { DatabaseTestService } from './database-test/database-test.service';
         synchronize: true, // Note: set this to false in production
       }),
     }),
-    // TypeOrmModule.forFeature([User]),
-    // AuthModule,
+    AuthModule,
   ],
-  providers: [DatabaseTestService],
-  controllers: [DatabaseTestController],
+  providers: [DatabaseTestService, AppService],
+  controllers: [DatabaseTestController, AppController],
 })
-@Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
-})
+// @Module({
+//   imports: [],
+//   controllers: [AppController],
+//   providers: [AppService],
+// })
 export class AppModule {}
