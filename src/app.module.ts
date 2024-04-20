@@ -3,12 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { DatabaseTestService } from './database-test/database-test.service';
 import { DatabaseTestController } from './database-test/database-test.controller';
-import { AuthModule } from './modules/auth/auth.module';
-import { User } from './modules/users/entities/user.entity';
-import { UsersService } from './modules/users/users.service';
-import { UserController } from './modules/users/user.controller';
+import { DatabaseTestService } from './database-test/database-test.service';
 
 @Module({
   imports: [
@@ -26,11 +22,11 @@ import { UserController } from './modules/users/user.controller';
         synchronize: true, // Note: set this to false in production
       }),
     }),
-    TypeOrmModule.forFeature([User]),
-    AuthModule,
+    // TypeOrmModule.forFeature([User]),
+    // AuthModule,
   ],
-  providers: [DatabaseTestService, UsersService],
-  controllers: [DatabaseTestController, UserController],
+  providers: [DatabaseTestService],
+  controllers: [DatabaseTestController],
 })
 @Module({
   imports: [],
