@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DatabaseTestController } from './database-test/database-test.controller';
 import { DatabaseTestService } from './database-test/database-test.service';
 import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -24,13 +25,9 @@ import { AuthModule } from './modules/auth/auth.module';
       }),
     }),
     AuthModule,
+    UsersModule,
   ],
   providers: [DatabaseTestService, AppService],
   controllers: [DatabaseTestController, AppController],
 })
-// @Module({
-//   imports: [],
-//   controllers: [AppController],
-//   providers: [AppService],
-// })
 export class AppModule {}

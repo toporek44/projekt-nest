@@ -1,4 +1,3 @@
-// src/users/users.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -13,31 +12,14 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'xD',
-      password: 'xD',
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      password: 'guess',
-    },
-  ];
-
-
   async findOne(username: string): Promise<User | null> {
     return this.usersRepository.findOne({ where: { username } });
   }
 
-  async create({ password, username }: CreateUserDto): Promise<User> {
+  async create({ password, username, email }: CreateUserDto): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = this.usersRepository.create({ username, password: hashedPassword });
+    const newUser = this.usersRepository.create({ username, password: hashedPassword, email });
     await this.usersRepository.save(newUser);
     return newUser;
   }
-
-  // Implement additional methods as needed
 }
