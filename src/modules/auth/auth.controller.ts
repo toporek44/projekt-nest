@@ -1,12 +1,12 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, Delete, Param } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiBody, ApiConsumes, ApiOperation } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { User } from '../users/entities/user.entity';
 import { CreateUserDto } from '../users/swagger/create-user.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
@@ -16,14 +16,14 @@ export class AuthController {
     schema: {
       type: 'object',
       properties: {
-        username: { type: 'string' },
+        email: { type: 'string' },
         password: { type: 'string' },
       },
-      required: ['username', 'password'],
+      required: ['email', 'password'],
     },
   })
   signIn(@Body() signInDto: User) {
-    return this.authService.signIn(signInDto.username, signInDto.password);
+    return this.authService.signIn(signInDto.email, signInDto.password);
   }
 
   @HttpCode(HttpStatus.OK)
@@ -41,7 +41,26 @@ export class AuthController {
       required: ['username', 'password', 'email'],
     },
   })
-  register(@Body() createUserDto: CreateUserDto): any {
+  registerUser(@Body() createUserDto: CreateUserDto): any {
     return this.authService.create(createUserDto);
+  }
+
+
+  @HttpCode(HttpStatus.OK)
+  @Delete('deleteUser/:userId')
+  // @ApiOperation({ summary: 'Submit form data' })
+  // @ApiConsumes('application/x-www-form-urlencoded')
+  // @ApiBody({
+  //   schema: {
+  //     type: 'object',
+  //     properties: {
+  //       userId: { type: 'string' },
+  //     },
+  //     required: ['userId'],
+  //   },
+  // })
+  @ApiParam({ name:'userId', description: 'Deleted user\'s id' })
+  deleteUser(@Param() userId: string): any {
+    return this.authService.delete(userId);
   }
 }
