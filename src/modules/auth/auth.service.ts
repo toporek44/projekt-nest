@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../users/entities/user.entity';
-import { CreateUserDto } from '../users/swagger/create-user.dto';
+import { CreateUserDto, User } from '../users/entities/user.entity';
+// import { CreateUserDto } from '../users/swagger/create-user.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -32,6 +32,8 @@ export class AuthService {
   }
 
   async delete(userId: string) {
-    this.usersService.delete(userId)
+    const deletedUser = this.usersService.delete(userId)
+
+    return deletedUser;
   }
 }

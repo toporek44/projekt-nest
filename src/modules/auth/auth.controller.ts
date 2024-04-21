@@ -1,8 +1,8 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, Delete, Param } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiBody, ApiConsumes, ApiOperation, ApiParam } from '@nestjs/swagger';
-import { User } from '../users/entities/user.entity';
-import { CreateUserDto } from '../users/swagger/create-user.dto';
+import { CreateUserDto, UserLoginDto } from '../users/entities/user.entity';
+// import { CreateUserDto } from '../users/swagger/create-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -22,7 +22,7 @@ export class AuthController {
       required: ['email', 'password'],
     },
   })
-  signIn(@Body() signInDto: User) {
+  signIn(@Body() signInDto: UserLoginDto) {
     return this.authService.signIn(signInDto.email, signInDto.password);
   }
 
@@ -48,17 +48,6 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Delete('deleteUser/:userId')
-  // @ApiOperation({ summary: 'Submit form data' })
-  // @ApiConsumes('application/x-www-form-urlencoded')
-  // @ApiBody({
-  //   schema: {
-  //     type: 'object',
-  //     properties: {
-  //       userId: { type: 'string' },
-  //     },
-  //     required: ['userId'],
-  //   },
-  // })
   @ApiParam({ name:'userId', description: 'Deleted user\'s id' })
   deleteUser(@Param() userId: string): any {
     return this.authService.delete(userId);
