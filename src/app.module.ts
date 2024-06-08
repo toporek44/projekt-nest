@@ -3,10 +3,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { DatabaseTestController } from './database-test/database-test.controller';
-import { DatabaseTestService } from './database-test/database-test.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
+import { FinanceModule } from './modules/finance/finance.module';
+import { StatisticsModule } from './modules/statistics/statistics.module';
+import { CategoryModule } from './modules/category/category.module';
+import { ReminderModule } from './modules/reminder/reminder.module';
+import { DatabaseHealthCheckModule } from './modules/database-healthcheck/database-healthcheck.module';
 
 @Module({
   imports: [
@@ -22,10 +25,15 @@ import { UsersModule } from './modules/users/users.module';
         synchronize: true, // Note: set this to false in production
       }),
     }),
+    DatabaseHealthCheckModule,
     AuthModule,
     UsersModule,
+    FinanceModule,
+    StatisticsModule,
+    CategoryModule,
+    ReminderModule,
   ],
-  providers: [DatabaseTestService, AppService],
-  controllers: [DatabaseTestController, AppController],
+  providers: [AppService],
+  controllers: [AppController],
 })
 export class AppModule {}

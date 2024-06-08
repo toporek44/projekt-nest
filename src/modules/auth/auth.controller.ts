@@ -1,27 +1,19 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Delete, Param } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiBody, ApiConsumes, ApiOperation, ApiParam } from '@nestjs/swagger';
-import { CreateUserDto, UserLoginDto } from '../users/entities/user.entity';
-// import { CreateUserDto } from '../users/swagger/create-user.dto';
+import { ApiBody, ApiConsumes, ApiOperation } from '@nestjs/swagger';
+import { CreateUserDto, User, UserLoginDto } from '../users/entities/user.entity';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
 
 @Controller('auth')
+@Serialize(User)
 export class AuthController {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
   @ApiOperation({ summary: 'Submit form data' })
   @ApiConsumes('application/x-www-form-urlencoded')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        email: { type: 'string' },
-        password: { type: 'string' },
-      },
-      required: ['email', 'password'],
-    },
-  })
+  @ApiBody({ type: UserLoginDto })
   signIn(@Body() signInDto: UserLoginDto) {
     return this.authService.signIn(signInDto.email, signInDto.password);
   }
@@ -30,26 +22,8 @@ export class AuthController {
   @Post('register')
   @ApiOperation({ summary: 'Submit form data' })
   @ApiConsumes('application/x-www-form-urlencoded')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        username: { type: 'string' },
-        password: { type: 'string' },
-        email: { type: 'string' },
-      },
-      required: ['username', 'password', 'email'],
-    },
-  })
+  @ApiBody({ type: CreateUserDto })
   registerUser(@Body() createUserDto: CreateUserDto): any {
-    return this.authService.create(createUserDto);
-  }
-
-
-  @HttpCode(HttpStatus.OK)
-  @Delete('deleteUser/:userId')
-  @ApiParam({ name:'userId', description: 'Deleted user\'s id' })
-  deleteUser(@Param() userId: string): any {
-    return this.authService.delete(userId);
+    return this.authService.signUp(createUserDto);
   }
 }

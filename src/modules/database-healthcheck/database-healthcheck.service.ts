@@ -3,7 +3,7 @@ import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
 
 @Injectable()
-export class DatabaseTestService {
+export class DatabaseHealthCheckService {
   constructor(@InjectEntityManager() private readonly entityManager: EntityManager) {}
 
   async testConnection(): Promise<string> {
