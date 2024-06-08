@@ -3,7 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { FinanceModule } from './modules/finance/finance.module';
 import { StatisticsModule } from './modules/statistics/statistics.module';
@@ -26,7 +25,6 @@ import { DatabaseHealthCheckModule } from './modules/database-healthcheck/databa
       }),
     }),
     DatabaseHealthCheckModule,
-    AuthModule,
     UsersModule,
     FinanceModule,
     StatisticsModule,

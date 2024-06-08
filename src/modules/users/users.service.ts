@@ -11,10 +11,18 @@ export class UsersService {
   ) {}
 
   async findById(userId: string): Promise<User | null> {
+    if (!userId) {
+      return null;
+    }
+
     return this.usersRepository.findOne({ where: { userId } });
   }
 
   async findByEmail(email: string): Promise<User | null> {
+    if (!email) {
+      return null;
+    }
+
     return this.usersRepository.findOne({ where: { email } });
   }
 
@@ -33,7 +41,7 @@ export class UsersService {
     const deletedUser = await this.usersRepository.delete(userId);
 
     if (!deletedUser) {
-      throw new NotFoundException();
+      throw new NotFoundException('user not found');
     }
 
     return deletedUser;
