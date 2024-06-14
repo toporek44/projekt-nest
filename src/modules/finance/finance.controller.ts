@@ -1,8 +1,12 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
 import { FinanceService } from './finance.service';
 import { CreateFinanceDTO, UpdateFinanceDTO } from './entities/finance.entity';
+import { ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
+@ApiTags('Finances')
 @Controller('finances')
+@UseGuards(AuthGuard)
 export class FinanceController {
   constructor(private readonly financeService: FinanceService) {}
 

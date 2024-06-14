@@ -7,7 +7,7 @@ import { AuthGuard } from 'src/guards/auth.guard';
 @ApiTags('notifications')
 @ApiBearerAuth()
 @Controller('notifications')
-@UseGuards(AuthGuard) // Protect these routes with JWT authentication
+@UseGuards(AuthGuard)
 export class NotificationController {
   constructor(private readonly notificationService: NotificationService) {}
 

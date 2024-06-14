@@ -1,8 +1,12 @@
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, UseGuards } from '@nestjs/common';
 import { ReminderService } from './reminder.service';
 import { CreateReminderDTO, UpdateReminderDTO } from './entities/reminder.entity';
+import { ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/guards/auth.guard';
 
+@ApiTags('Reminders')
 @Controller('reminders')
+@UseGuards(AuthGuard)
 export class ReminderController {
   constructor(private readonly reminderService: ReminderService) {}
 
