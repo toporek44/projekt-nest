@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Category } from './entities/category.entity';
+import { Category, CreateCategoryDTO, UpdateCategoryDTO } from './entities/category.entity';
 
 @Injectable()
 export class CategoryService {
@@ -10,22 +10,32 @@ export class CategoryService {
     private categoryRepository: Repository<Category>,
   ) {}
 
-  async findAll(): Promise<any[]> {
-    // Logic to retrieve all categories
-    return [];
+  async findAll(): Promise<Category[]> {
+    return this.categoryRepository.find();
   }
 
-  async create(createCategoryDto: any): Promise<any> {
-    // Logic to create a new category
-    return {};
+  async create(createCategoryDto: CreateCategoryDTO): Promise<Category> {
+    const category = this.categoryRepository.create(createCategoryDto);
+
+    return this.categoryRepository.save(category);
   }
 
-  async update(id: string, updateCategoryDto: any): Promise<any> {
-    // Logic to update an existing category
-    return {};
+  async update(id: string, updateCategoryDto: UpdateCategoryDTO): Promise<Category> {
+    const category = await this.categoryRepository.preload({
+      id: +id,
+      ...updateCategoryDto,
+    });
+    if (!category) {
+      throw new Error('Category not found.');
+    }
+
+    return this.categoryRepository.save(category);
   }
 
   async remove(id: string): Promise<void> {
-    // Logic to delete a category
+    const result = await this.categoryRepository.delete(id);
+    if (result.affected === 0) {
+      throw new Error('Category not found.');
+    }
   }
 }

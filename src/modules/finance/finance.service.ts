@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Finance } from './entities/finance.entity';
+import { CreateFinanceDTO, Finance, UpdateFinanceDTO } from './entities/finance.entity';
 
 @Injectable()
 export class FinanceService {
@@ -10,22 +10,32 @@ export class FinanceService {
     private financeRepository: Repository<Finance>,
   ) {}
 
-  async findAll(): Promise<any[]> {
-    // Logic to retrieve all finance records
-    return [];
+  async findAll(): Promise<Finance[]> {
+    return this.financeRepository.find();
   }
 
-  async create(createFinanceDto: any): Promise<any> {
-    // Logic to create a new finance record
-    return {};
+  async create(createFinanceDto: CreateFinanceDTO): Promise<Finance> {
+    const finance = this.financeRepository.create(createFinanceDto);
+
+    return this.financeRepository.save(finance);
   }
 
-  async update(id: string, updateFinanceDto: any): Promise<any> {
-    // Logic to update an existing finance record
-    return {};
+  async update(id: string, updateFinanceDto: UpdateFinanceDTO): Promise<Finance> {
+    const finance = await this.financeRepository.preload({
+      id: +id, // ensure this is a number if your ID is numerical
+      ...updateFinanceDto,
+    });
+    if (!finance) {
+      throw new Error('Finance record not found.');
+    }
+
+    return this.financeRepository.save(finance);
   }
 
   async remove(id: string): Promise<void> {
-    // Logic to delete a finance record
+    const result = await this.financeRepository.delete(id);
+    if (result.affected === 0) {
+      throw new Error('Finance record not found.');
+    }
   }
 }

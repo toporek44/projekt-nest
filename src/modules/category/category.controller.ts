@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
 import { CategoryService } from './category.service';
+import { CreateCategoryDTO, UpdateCategoryDTO } from './entities/category.entity';
 
 @Controller('categories')
 export class CategoryController {
@@ -7,21 +8,21 @@ export class CategoryController {
 
   @Get()
   async findAll() {
-    // Retrieve all categories
+    return this.categoryService.findAll();
   }
 
   @Post()
-  async create(@Body() createCategoryDto: any) {
-    // Create a new category
+  async create(@Body() createCategoryDto: CreateCategoryDTO) {
+    return this.categoryService.create(createCategoryDto);
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateCategoryDto: any) {
-    // Update an existing category
+  async update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDTO) {
+    return this.categoryService.update(id, updateCategoryDto);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    // Delete a category
+    await this.categoryService.remove(id);
   }
 }

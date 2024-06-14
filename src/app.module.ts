@@ -9,6 +9,7 @@ import { StatisticsModule } from './modules/statistics/statistics.module';
 import { CategoryModule } from './modules/category/category.module';
 import { ReminderModule } from './modules/reminder/reminder.module';
 import { DatabaseHealthCheckModule } from './modules/database-healthcheck/database-healthcheck.module';
+import { NotificationModule } from './sockets/notifications/notification.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { DatabaseHealthCheckModule } from './modules/database-healthcheck/databa
     StatisticsModule,
     CategoryModule,
     ReminderModule,
+    NotificationModule,
   ],
   providers: [AppService],
   controllers: [AppController],
