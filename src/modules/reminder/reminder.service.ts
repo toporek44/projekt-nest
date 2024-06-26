@@ -15,15 +15,19 @@ export class ReminderService {
   }
 
   async create(createReminderDto: CreateReminderDTO): Promise<Reminder> {
-    const reminder = this.reminderRepository.create(createReminderDto);
+    const createdAt = new Date();
+    const reminder = this.reminderRepository.create({ ...createReminderDto, createdAt, updatedAt: createdAt });
 
     return this.reminderRepository.save(reminder);
   }
 
   async update(id: string, updateReminderDto: UpdateReminderDTO): Promise<Reminder> {
+    const updatedAt = new Date();
+
     const reminder = await this.reminderRepository.preload({
       id: +id, // Convert string ID to numeric if your ID is a number
       ...updateReminderDto,
+      updatedAt,
     });
     if (!reminder) {
       throw new Error('Reminder not found.');

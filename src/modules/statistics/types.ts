@@ -5,7 +5,7 @@ export interface GeneralStatistics {
 
 export interface ChartDataPoint {
   date: string;
-  totalValue: number;
+  totalAmount: number;
 }
 
 export type ChartStatistics = ChartDataPoint[];

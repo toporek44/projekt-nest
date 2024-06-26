@@ -10,4 +10,10 @@ export class Statistics {
 
   @Column('decimal', { precision: 10, scale: 2 })
   averageValue: number;
+
+  @Column({ type: 'timestamp' })
+  created_at: Date;
+
+  @Column('float')
+  value: number;
 }

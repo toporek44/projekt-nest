@@ -43,9 +43,9 @@ export class NotificationService {
     return this.notificationRepository.find({ where: { userId }, order: { createdAt: 'DESC' } });
   }
 
-  async processNotification(data: CreateNotificationDTO, user: User) {
+  async processNotification(data: CreateNotificationDTO, userId: string) {
     const notification = this.notificationRepository.create({
-      userId: user.userId,
+      userId: userId,
       content: data.message,
     });
     await this.notificationRepository.save(notification);

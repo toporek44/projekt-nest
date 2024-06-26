@@ -1,8 +1,20 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Param,
+  Body,
+  HttpCode,
+  HttpStatus,
+  UseGuards,
+  Session,
+} from '@nestjs/common';
 import { FinanceService } from './finance.service';
 import { CreateFinanceDTO, UpdateFinanceDTO } from './entities/finance.entity';
-import { ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
+import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @ApiTags('Finances')
 @Controller('finances')
@@ -15,11 +27,16 @@ export class FinanceController {
     return this.financeService.findAll();
   }
 
+  @ApiOperation({ summary: 'Submit form data' })
+  @ApiConsumes('application/x-www-form-urlencoded')
+  @ApiBody({ type: CreateFinanceDTO })
   @Post()
-  async create(@Body() createFinanceDto: CreateFinanceDTO) {
-    return this.financeService.create(createFinanceDto);
+  async create(@Body() createFinanceDto: CreateFinanceDTO, @Session() session: any) {
+    return this.financeService.create({ ...createFinanceDto, userId: session.userId });
   }
-
+  @ApiOperation({ summary: 'Submit form data' })
+  @ApiConsumes('application/x-www-form-urlencoded')
+  @ApiBody({ type: UpdateFinanceDTO })
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateFinanceDto: UpdateFinanceDTO) {
     return this.financeService.update(id, updateFinanceDto);

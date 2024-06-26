@@ -15,7 +15,8 @@ export class FinanceService {
   }
 
   async create(createFinanceDto: CreateFinanceDTO): Promise<Finance> {
-    const finance = this.financeRepository.create(createFinanceDto);
+    const createdAt = new Date();
+    const finance = this.financeRepository.create({ ...createFinanceDto, createdAt });
 
     return this.financeRepository.save(finance);
   }

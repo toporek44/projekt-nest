@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, UseGuards } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDTO, UpdateCategoryDTO } from './entities/category.entity';
-import { ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
+import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @ApiTags('Categories')
 @Controller('categories')
@@ -15,11 +15,17 @@ export class CategoryController {
     return this.categoryService.findAll();
   }
 
+  @ApiOperation({ summary: 'Submit form data' })
+  @ApiConsumes('application/x-www-form-urlencoded')
+  @ApiBody({ type: CreateCategoryDTO })
   @Post()
   async create(@Body() createCategoryDto: CreateCategoryDTO) {
     return this.categoryService.create(createCategoryDto);
   }
 
+  @ApiOperation({ summary: 'Submit form data' })
+  @ApiConsumes('application/x-www-form-urlencoded')
+  @ApiBody({ type: UpdateCategoryDTO })
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDTO) {
     return this.categoryService.update(id, updateCategoryDto);
